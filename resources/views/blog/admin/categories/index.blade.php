@@ -7,6 +7,7 @@
         <div class="row">
             <div class="col-12">
 
+
                 <nav class="navbar navbar-toggle navbar-light bg-faded">
                     <a class="btn btn-primary" href="{{route("blog.admin.categories.create")}}">Add New Category</a>
                 </nav>

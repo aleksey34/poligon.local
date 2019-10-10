@@ -184,6 +184,25 @@ if($result){
      */
     public function destroy($id)
     {
-        dd(__METHOD__ , $id , request()->all());
+    	// soft delete
+    	$result = BlogPost::destroy($id);
+
+
+    	// full delete
+	    //$result  = BlogPost::forceDelete($id);
+
+
+	    // $result -- amount deleted posts
+	    if($result){
+	    	return redirect()
+			    ->route("blog.admin.posts.index")
+			    ->with(["success" => "Запись  [$id]  Удалена"]);
+	    }else{
+	    	return back()
+			    ->withErrors(["msg"=>"Ошибка удаления"]);
+	    }
+
+
+//        dd(__METHOD__ , $id , request()->all());
     }
 }

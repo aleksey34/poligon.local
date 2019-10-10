@@ -111,6 +111,18 @@ class BlogPostObserver
 
     }
 
+
+	/**
+	 * before delete post
+	 */
+    public  function  deleting(BlogPost $blogPost){
+//dd(__METHOD__  , $blogPost->id);
+//return false;
+    }
+
+
+
+
     /**
      * Handle the blog post "deleted" event.
      *
