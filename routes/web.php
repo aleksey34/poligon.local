@@ -21,7 +21,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// for learning Collections!!
+Route::group(['prefix'=>"digging_deeper"] , function (){
+	Route::get("collections" , "diggingDeeperController@collections")
+		->name("digging_deeper.collections");
+});
 
+// end learning collections
 
 // for blog
 Route::group(['namespace'=>"Blog" , 'prefix'=>'blog'] , function (){
