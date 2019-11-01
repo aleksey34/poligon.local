@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
         	[
 				'name'=>'Unknown author' ,
 		        'email'=> 'author_unknown@g.g' ,
-				'password'=> bcrypt(str_random(16))
+				'password'=> bcrypt(Str::random(16))
 	        ] ,
 	        [
 				'name'=>'Author' ,
