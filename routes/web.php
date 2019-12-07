@@ -67,6 +67,12 @@ Route::group($groupData ,  function (){
 // end admin
 
 
+// for vue api
+//Route::get("/vue-json-data" , ["as"=>"vue_json_get_cars" , "uses"=>"VueApi\VueApiController@index"]);
+//Route::get("/vue-json-data-create" , ["as"=>"vue_json_create_car" , "uses"=>"VueApi\VueApiController@createCar"]);
+
+
+
 // for api
 //Route::resource("rest" , "RestTestController")->names("testApi");
 

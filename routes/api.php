@@ -14,7 +14,17 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+   return $request->user();
 });
 
+// for vue api
+Route::resource("/vue-json-data" , "VueApi\VueApiController");
+
+// custom delete
+Route::post("/vue-json-data-delete", ["as"=>"vue_json_delete_car" , "uses"=>"VueApi\VueApiController@destroy_custom" ]);
+
+
+//Route::resource("http://poligon/vue-json-data" , "VueApi\VueApiController");
+//Route::post("/vue-json-data-create" , ["as"=>"vue_json_create_car" , "uses"=>"VueApi\VueApiController@createCar"]);
+//Route::post("/vue-json-data-create" , "VueApi\VueApiController@createCar");
 
