@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blog;
 
 
+use App\Http\Requests\BlogPostCreateRequest;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Blog\BaseController;
@@ -38,9 +39,10 @@ class PostController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BlogPostCreateRequest $request)
     {
-        //
+
+
     }
 
     /**
@@ -85,6 +87,8 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        //
+
+
+
     }
 }

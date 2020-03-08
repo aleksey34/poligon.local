@@ -10,6 +10,9 @@ use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogPostRepository;
 use Illuminate\Http\Request;
 
+use App\Jobs\BlogPostAfterCreateJob;
+use App\Jobs\BlogPostAfterDeleteJob;
+
 
 
 use App\Http\Controllers\Controller;
@@ -71,20 +74,18 @@ public  function  __construct() {
      */
     public function store(BlogPostCreateRequest $request)
     {
-    	$data = $request->input();
-
-    	$item  = (new BlogPost())->create($data);
-
-    	if($item){
-		return redirect()
-			->route("blog.admin.posts.edit" , [$item->id])
-			->with(["success"=>"Пост успешно создан"]);
+	    $data = $request->input();
+	    $item = BlogPost::create($data);
+	    if($item){
+		    $job = new BlogPostAfterCreateJob($item);
+		    $this->dispatch($job);
+		    return redirect()->route("blog.admin.posts.edit", [$item->id])
+		                     ->with(["success" => "Успешно сохраненно"]);
 	    }else{
-        return  back()
-	        ->withErrors(["msg"=>"Ошибка сохранения"])
-	        ->withInput();
-	    }
 
+		    return back()->withErrors(['msg'=>"Ошибка сохранения."])
+		                 ->withInput();
+	    }
 
 
     }
@@ -164,16 +165,10 @@ if($result){
 	return back()
 		->withErrors(["msg"=>"Ошибка сохранения"])
 		->withInput();
-
-
 }
 
 
-
-
     }
-
-
 
 
     /**
@@ -184,23 +179,31 @@ if($result){
      */
     public function destroy($id)
     {
-    	// soft delete
-    	$result = BlogPost::destroy($id);
-
-
-    	// full delete
+	    // soft delete
+	    $result = BlogPost::destroy($id);
+// full delete
 	    //$result  = BlogPost::forceDelete($id);
 
-
-	    // $result -- amount deleted posts
 	    if($result){
-	    	return redirect()
-			    ->route("blog.admin.posts.index")
-			    ->with(["success" => "Запись  [$id]  Удалена"]);
+		    BlogPostAfterDeleteJob::dispatch($id)->delay(20);
+
+		    // like force - in at the moment -make task
+		    //  BlogPostAfterDeleteJob::dispatchNow($id);
+
+		    // with helper
+		    //$this->dispatch(new BlogPostAfterDeleteJob($id));
+//   more - $this->>dispatchNow(.....)  despatchableJob need is
+
+		    return redirect()
+			    ->route('blog.admin.posts.index')
+			    ->with(['success'=>"Запись  id[$id]  успешно удалена"]);
+
 	    }else{
-	    	return back()
-			    ->withErrors(["msg"=>"Ошибка удаления"]);
+		    return back()->withErrors(['msg'=>'Ошибка удаления']);
 	    }
+
+
+
 
 
 //        dd(__METHOD__ , $id , request()->all());
